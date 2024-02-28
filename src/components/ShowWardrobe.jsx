@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getDownloadURL, ref, listAll } from "firebase/storage";
+import { getDownloadURL, ref, listAll, deleteObject } from "firebase/storage";
 import { storage } from "../utils/firebase";
 import ReactImageZoom from "react-image-zoom";
+import { Toaster, toast } from "react-hot-toast";
 
 const ShowWardrobe = () => {
   const [imageUrls, setImageUrls] = useState([]);
@@ -27,7 +28,7 @@ const ShowWardrobe = () => {
       const urls = await Promise.all(
         items.items.map(async (item) => {
           const url = await getDownloadURL(item);
-          return { url, liked: false };
+          return { url, liked: false, ref: item }; // Keep reference for deletion
         })
       );
 
@@ -60,6 +61,22 @@ const ShowWardrobe = () => {
     }
 
     localStorage.setItem("likedImages", JSON.stringify(likedImages));
+  };
+
+  const handleDeleteImage = async (url, index) => {
+    toast.success("Image Deleted Successfully");
+    try {
+      await deleteObject(imageUrls[index].ref);
+      const updatedImageUrls = [...imageUrls];
+      updatedImageUrls.splice(index, 1);
+      setImageUrls(updatedImageUrls);
+      localStorage.setItem(
+        "likedImages",
+        JSON.stringify(likedImages.filter((img) => img.url !== url))
+      );
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
   };
 
   return (
@@ -97,6 +114,12 @@ const ShowWardrobe = () => {
                     &#9829;
                   </button>
                 </div>
+                <button
+                  className="absolute top-2 left-2 text-red-500"
+                  onClick={() => handleDeleteImage(url, index)}
+                >
+                  &#10006;
+                </button>
                 <img
                   src={url}
                   alt={`Wardrobe Image ${index}`}
@@ -108,9 +131,9 @@ const ShowWardrobe = () => {
           : imageUrls.map(({ url, liked }, index) => (
               <div
                 key={index}
-                className="m-4 rounded-lg overflow-hidden shadow-md relative"
+                className="m-4 rounded-lg overflow-hidden shadow-md relative transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
               >
-                <div className="absolute top-2 right-2">
+                <div className="absolute top-2 right-2 ">
                   <button
                     className={`text-2xl ${
                       liked ? "text-red-500" : "text-gray-500"
@@ -120,6 +143,12 @@ const ShowWardrobe = () => {
                     &#9825;
                   </button>
                 </div>
+                <button
+                  className="absolute top-2 left-2 text-red-500"
+                  onClick={() => handleDeleteImage(url, index)}
+                >
+                  &#10006;
+                </button>
                 <img
                   src={url}
                   alt={`Wardrobe Image ${index}`}
@@ -148,6 +177,7 @@ const ShowWardrobe = () => {
           </div>
         </div>
       )}
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };
