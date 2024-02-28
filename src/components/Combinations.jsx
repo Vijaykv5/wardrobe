@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../utils/firebase";
 import ReactImageZoom from "react-image-zoom";
+import { Toaster, toast } from "react-hot-toast";
 
 const Combinations = () => {
   const [imageUrls, setImageUrls] = useState([]);
@@ -47,10 +48,18 @@ const Combinations = () => {
 
   return (
     <div className="text-center">
-      <h1 className="text-3xl font-bold mt-20 mb-8 ">See New Combinations</h1>
+      <div className="flex justify-center items-center">
+        <p
+          className="text-3xl  -mb-16 m-16 p-3 font-bold bg-blue-500 rounded-md text-white"
+          style={{ fontFamily: "Arial, sans-serif" }}
+        >
+          See New Combinations
+        </p>
+      </div>
+      
       <button
         onClick={handleShuffle}
-        className="bg-gray-900 hover:bg-gray-800  text-white font-bold py-2 px-4 rounded"
+        className="bg-blue-500 hover:bg-blue-400  text-white font-bold my-20 py-2 px-4 rounded"
       >
         Shuffle Wardrobe
       </button>

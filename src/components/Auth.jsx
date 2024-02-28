@@ -50,7 +50,7 @@ const Auth = () => {
         </>
       ) : (
         <>
-          <div className=" ">
+          <div className="mb-9">
             <LandingPage />
             <GoogleButton className="ml-[80vh] " onClick={handleSignIn} />
           </div>

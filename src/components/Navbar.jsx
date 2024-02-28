@@ -11,7 +11,7 @@ const Navbar = ({ user, handleSignOut }) => {
   };
 
   return (
-    <div className="w-full bg-slate-800 p-10 text-2xl font-semibold text-white">
+    <div className="w-full bg-black p-10 text-2xl font-semibold text-white">
       <div className="flex justify-between">
         Welcome, {user.name}!
         <VscSignOut
