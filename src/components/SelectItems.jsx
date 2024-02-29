@@ -4,6 +4,11 @@ import { Link } from "react-router-dom";
 const SelectItems = () => {
   return (
     <>
+      <Link to="/">
+        <button className="absolute top-2 left-2 text-white px-4 py-2 rounded-md bg-black ">
+          Back
+        </button>
+      </Link>
       <div className="flex justify-center items-center">
         <p
           className="text-3xl my-16 -mb-16 m-20 p-3 font-bold bg-blue-500 rounded-md text-white"

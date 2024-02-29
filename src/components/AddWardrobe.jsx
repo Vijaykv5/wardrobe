@@ -38,7 +38,6 @@ function App() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log("File available at", downloadURL);
-          // Redirect to '/' page after upload
           window.location.href = "/";
         });
       }
@@ -56,7 +55,7 @@ function App() {
 
     setLoading(true);
 
-    const apiKey = "RWabWvoZk5UtxfgYGSHu52Sf"; // Replace with your Remove.bg API key
+    const apiKey = "B6c5X69duodovFz8NneALSDx"; 
 
     const formData = new FormData();
     formData.append("image_file", file);
@@ -96,8 +95,12 @@ function App() {
   return (
     <section className="container flex justify-center items-center h-screen">
       <div className="max-w-lg mx-auto">
-        <div className="flex justify-center mb-6">
-          <Link to="/" className="absolute top-2 left-2 text-white">
+        <div>
+          <div className="flex justify-center mb-6">
+          <Link
+            to="/selectItems"
+            className="absolute top-2 left-2 text-white px-4 py-2 rounded-md bg-black"
+          >
             Back
           </Link>
           <div
@@ -119,9 +122,12 @@ function App() {
               </div>
             )}
             {!file && (
-              <div className="bg-gray-200 h-48 rounded-lg flex items-center justify-center text-gray-500">
-                No image uploaded
-              </div>
+              <>
+                <div className="bg-gray-200 h-48 rounded-lg flex items-center justify-center text-gray-500">
+                  No image uploaded
+                </div>
+                <p className="text-gray-500 mt-2">PNG,JPG Files only</p>
+              </>
             )}
           </div>
           {file && !loading && (
@@ -168,6 +174,7 @@ function App() {
               Remove Background
             </button>
           </div>
+        </div>
         </div>
       </div>
       <Toaster position="top-right" reverseOrder={false} />

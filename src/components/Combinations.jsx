@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../utils/firebase";
-import ReactImageZoom from "react-image-zoom";
 import { Toaster, toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Combinations = () => {
   const [imageUrls, setImageUrls] = useState([]);
@@ -47,59 +47,67 @@ const Combinations = () => {
   };
 
   return (
-    <div className="text-center">
-      <div className="flex justify-center items-center">
-        <p
-          className="text-3xl  -mb-16 m-16 p-3 font-bold bg-blue-500 rounded-md text-white"
-          style={{ fontFamily: "Arial, sans-serif" }}
-        >
-          See New Combinations
-        </p>
-      </div>
-      
-      <button
-        onClick={handleShuffle}
-        className="bg-blue-500 hover:bg-blue-400  text-white font-bold my-20 py-2 px-4 rounded"
-      >
-        Shuffle Wardrobe
-      </button>
-      <div className="flex flex-wrap justify-center mt-8">
-        {selectedImageUrls.map((url, index) => (
-          <div
-            key={index}
-            className="m-4 rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
-            onClick={() => handleImageClick(url)}
+    <>
+      <Link to="/">
+        <button className="absolute top-2 left-2 text-white px-4 py-2 rounded-md bg-black ">
+          Back
+        </button>
+      </Link>
+      <div className="text-center">
+        <div className="flex justify-center items-center">
+          <p
+            className="text-3xl  -mb-16 m-16 p-3 font-bold bg-blue-500 rounded-md text-white"
+            style={{ fontFamily: "Arial, sans-serif" }}
           >
-            <img
-              src={url}
-              alt={`Wardrobe Image ${index}`}
-              className="w-72 h-72 object-cover"
-            />
-          </div>
-        ))}
-      </div>
-      {isZoomed && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75 z-50">
-          <div className="relative">
-            <button
-              className="absolute top-2 right-2 text-white text-xl bg-transparent border-none cursor-pointer"
-              onClick={handleCloseZoom}
-            >
-              &times;
-            </button>
-            <ReactImageZoom
-              width={500}
-              height={400}
-              zoomPosition="right"
-              img={selectedImageUrls[0]} // Displaying only one image for zoom
-            />
-          </div>
+            See New Combinations
+          </p>
         </div>
-      )}
-      <Toaster position="top-right" reverseOrder={false} />
-    </div>
+
+        <button
+          onClick={handleShuffle}
+          className="bg-blue-500 hover:bg-blue-400  text-white font-bold my-20 py-2 px-4 rounded"
+        >
+          Shuffle Wardrobe
+        </button>
+        <div className="flex flex-wrap justify-center mt-8">
+          {selectedImageUrls.map((url, index) => (
+            <div
+              key={index}
+              className="m-4 rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
+              onClick={() => handleImageClick(url)}
+            >
+              <img
+                src={url}
+                alt={`Wardrobe Image ${index}`}
+                className="w-72 h-72 object-cover"
+              />
+            </div>
+          ))}
+        </div>
+        {isZoomed && (
+          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75 z-50">
+            <div className="relative">
+              <button
+                className="absolute top-2 right-2 text-white text-xl bg-transparent border-none cursor-pointer"
+                onClick={handleCloseZoom}
+              >
+                &times;
+              </button>
+              <img
+                src={selectedImageUrls[0]} // Displaying only one image for zoom
+                alt="Selected Image"
+                className="max-w-full max-h-full"
+              />
+            </div>
+          </div>
+        )}
+        <Toaster position="top-right" reverseOrder={false} />
+      </div>
+    </>
   );
+  
 };
+
 
 // Function to shuffle an array
 const shuffleArray = (array) => {

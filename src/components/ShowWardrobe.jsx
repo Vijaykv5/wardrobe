@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getDownloadURL, ref, listAll, deleteObject } from "firebase/storage";
 import { storage } from "../utils/firebase";
-import ReactImageZoom from "react-image-zoom";
 import { Toaster, toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const ShowWardrobe = () => {
   const [imageUrls, setImageUrls] = useState([]);
@@ -81,6 +81,12 @@ const ShowWardrobe = () => {
 
   return (
     <div className="text-center">
+      <Link
+        to="/"
+        className="absolute top-2 left-2 text-white px-4 py-2 rounded-md bg-black"
+      >
+        Back
+      </Link>
       <div className="flex justify-center items-center">
         <p
           className="text-3xl  -mb-16 m-16 p-3 font-bold bg-blue-500 rounded-md text-white"
@@ -97,6 +103,9 @@ const ShowWardrobe = () => {
           {showLiked ? "Show All Items" : "Show Liked Items"}
         </button>
       </div>
+      {imageUrls.length === 0 && (
+        <p className="text-xl text-gray-600">Your wardrobe is empty.</p>
+      )}
       <div className="flex flex-wrap justify-center">
         {showLiked
           ? likedImages.map(({ url, liked }, index) => (
@@ -167,12 +176,10 @@ const ShowWardrobe = () => {
             >
               &times;
             </button>
-            <ReactImageZoom
-              width={500}
-              height={400}
-              zoomPosition="right"
-              img={selectedImageUrl}
-              zoomImage={selectedImageUrl}
+            <img
+              src={selectedImageUrl}
+              alt="Selected Image"
+              className="max-w-full max-h-full"
             />
           </div>
         </div>
